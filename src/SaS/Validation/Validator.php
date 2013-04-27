@@ -7,7 +7,7 @@ namespace SaS\Validation;
  *
  * @author drak3
  */
-class RequestValidator {
+class Validator {
     
     protected $validChars;
     
