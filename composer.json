@@ -1,0 +1,17 @@
+{
+    "name": "sasdbg/server-utils",
+    "description": "Common utilities for API-Servers",
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "drak3",
+            "email": "drak3@live.de"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "psr-0": { "SaS": ["src/", "test/src/"] }
+    }
+}
