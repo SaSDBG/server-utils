@@ -17,7 +17,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      */
     protected function setUp() {
-        $this->v = new RequestValidator('a-Z0-9()&%§="\'');
+        $this->v = new Validator('a-z0-9\[\]()&\'"');
     }
 
     /**
@@ -43,7 +43,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
         ];
         $validated = $this->v->validate($data, $constraints);
         $this->assertInstanceOf('\Sas\Validation\ValidationFailure', $validated);
-        $this->assertEquals([[2, 'foo']], $validated->getErrors());
+        $this->assertSame([[2, 'foo']], $validated->getErrors());
     }
     
 
@@ -62,7 +62,7 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
         ];
         $validated = $this->v->validate($data, $constraints);
         $this->assertInstanceOf('\Sas\Validation\ValidationSuccess', $validated);
-        $this->assertEquals($data, $validated->get());
+        $this->assertSame($data, $validated->get());
     }
     
     public function testNoAdditional_Failure() {
@@ -77,7 +77,244 @@ class ValidatorTest extends \PHPUnit_Framework_TestCase {
         ];
         $validated = $this->v->validate($data, $constraints);
         $this->assertInstanceOf('\SaS\Validation\ValidationFailure', $validated);
-        //todo: check for correct error
+        $this->assertSame([[9999, 'Unknown parameter asdf']], $validated->getErrors());
+    }
+    
+    public function testNoAdditional_Success() {
+        $constraints = [
+            'foo' => [
+                'required' => [1, 'asdf']
+            ]
+        ];
+        $data = [
+            'foo' => 'bar',
+        ];
+        $validated = $this->v->validate($data, $constraints);
+        $this->assertInstanceOf('\SaS\Validation\ValidationSuccess', $validated);
+        $this->assertSame($data, $validated->get());
+    }
+    
+    public function testIntValidation_Success() {
+        $constraints = [
+            'foo' => [
+                'int' => [123, 'no int']
+            ]
+        ];
+        $data = [
+            'foo' => 456
+        ];
+        
+        $validated = $this->v->validate($data, $constraints);
+        
+        $this->assertInstanceOf('\SaS\Validation\ValidationSuccess', $validated);
+        $this->assertSame($data, $validated->get());
+    }
+    
+    public function testIntValidation_Success_ValidInt() {
+        $constraints = [
+            'foo' => [
+                'int' => [123, 'no int']
+            ]
+        ];
+        $data = [
+            'foo' => '456'
+        ];
+        
+        $validated = $this->v->validate($data, $constraints);
+        
+        $expected = ['foo' => 456];
+        
+        $this->assertInstanceOf('\SaS\Validation\ValidationSuccess', $validated);
+        $this->assertSame($expected, $validated->get());
+        
+    }
+    
+    public function testIntValidtion_Failure_Object() {
+        $constraints = [
+            'foo' => [
+                'int' => [123, 'no int']
+            ]
+        ];
+        
+        $data = [
+            'foo' => new \DateTime
+        ];
+        
+        $validated = $this->v->validate($data, $constraints);
+        
+        $this->assertInstanceOf('\SaS\Validation\ValidationFailure', $validated);
+        $this->assertSame([[123, 'no int']], $validated->getErrors());
+    }
+    
+    public function testIntValidation_Failure_InvalidString() {
+        $constraints = [
+            'foo' => [
+                'int' => [123, 'no int']
+            ]
+        ];
+        
+        $data = [
+            'foo' => '1234vcs'
+        ];
+        
+        $validated = $this->v->validate($data, $constraints);
+        
+        $this->assertInstanceOf('\SaS\Validation\ValidationFailure', $validated);
+        $this->assertSame([[123, 'no int']], $validated->getErrors());
+    }
+    
+    public function testSHA1Validation_Success() {
+        $constraints = [
+            'foo' => [
+                'sha1' => [234, 'no sha1']
+            ]
+        ];
+        
+        $data = [
+            'foo' => sha1('bar')
+        ];
+        
+        $validated = $this->v->validate($data, $constraints);
+        
+        $this->assertInstanceOf('\SaS\Validation\ValidationSuccess', $validated);
+        $this->assertSame($data, $validated->get());
+    }
+    
+    public function testSHA1Validation_Failure_TooShort() {
+        $constraints = [
+            'foo' => [
+                'sha1' => [234, 'no sha1']
+            ]
+        ];
+        
+        $data = [
+            'foo' => 'aef92eb45de2b4'
+        ];
+        
+        $validated = $this->v->validate($data, $constraints);
+        
+        $this->assertInstanceOf('\SaS\Validation\ValidationFailure', $validated);
+        $this->assertSame([[234, 'no sha1']], $validated->getErrors());
+    }
+    
+    public function testSHA1Validation_Failure_InvalidChars() {
+        $constraints = [
+            'foo' => [
+                'sha1' => [234, 'no sha1']
+            ]
+        ];
+        
+        $wrongHash = sha1('bar');
+        $wrongHash[4] = 'z';
+        
+        $data = [
+            'foo' => $wrongHash
+        ];
+        
+        $validated = $this->v->validate($data, $constraints);
+        
+        $this->assertInstanceOf('\SaS\Validation\ValidationFailure', $validated);
+        $this->assertSame([[234, 'no sha1']], $validated->getErrors());
+    }
+    
+    public function testSHA1Validation_Failure_NoString() {
+        $constraints = [
+            'foo' => [
+                'sha1' => [234, 'no sha1']
+            ]
+        ];
+                
+        $data = [
+            'foo' => 234
+        ];
+        
+        $validated = $this->v->validate($data, $constraints);
+        
+        $this->assertInstanceOf('\SaS\Validation\ValidationFailure', $validated);
+        $this->assertSame([[234, 'no sha1']], $validated->getErrors());
+    }
+    
+    public function testValidateChars_Success() {
+        $constraints = [
+            'foo' => [
+                'valid-chars' => [234, 'no valid chars']
+            ]
+        ];
+        
+        $data = [
+            'foo' => 'asdf\'([])Barfoo&32"'
+        ];
+        
+        $validated = $this->v->validate($data, $constraints);
+        
+        $this->assertInstanceOf('\SaS\Validation\ValidationSuccess', $validated);
+        $this->assertSame($data, $validated->get());
+    }
+    
+    public function testValidateChars_Failure_NoString() {
+        $constraints = [
+            'foo' => [
+                'valid-chars' => [234, 'no valid chars']
+            ]
+        ];
+        
+        $data = [
+            'foo' => 1123
+        ];
+        
+        $validated = $this->v->validate($data, $constraints);
+        
+        $this->assertInstanceOf('\SaS\Validation\ValidationFailure', $validated);
+        $this->assertSame([[234, 'no valid chars']], $validated->getErrors());
+    }
+    
+    public function testValidateChars_Failure_InvalidChars() {
+        $constraints = [
+            'foo' => [
+                'valid-chars' => [234, 'no valid chars']
+            ]
+        ];
+        
+        $data = [
+            'foo' => 'asdf\'([])Barfoo&32"<>%!'
+        ];
+        
+        $validated = $this->v->validate($data, $constraints);
+        
+        $this->assertInstanceOf('\SaS\Validation\ValidationFailure', $validated);
+        $this->assertSame([[234, 'no valid chars']], $validated->getErrors());
+    }
+    
+    public function testMultipleErrors() {
+        $constraints = [
+            'foo' => [
+                'required' => [0, 'required'],
+                'int' => [1, 'no int']
+            ],
+            'bar' => [
+                'required' => [2, 'required'],
+                'valid-chars' => [3, 'no valid chars'],
+            ],
+            'asdf' => [
+                'required' => [4, 'required'],
+                'sha1' => [5, 'no sha1'],
+            ]
+        ];
+        
+        $data = [
+            'foo' => 'bar',
+            'asdf' => 'jklö'
+        ];
+        
+        $expectedErrors = [
+            [1, 'no int'],
+            [2, 'required'],
+            [5, 'no sha1'],
+        ];
+        
+        $validated = $this->v->validate($data, $constraints);
+        $this->assertInstanceOf('\SaS\Validation\ValidationFailure', $validated);
+        $this->assertEquals($expectedErrors, $validated->getErrors(), '', 0, 10, true);
     }
 
 }

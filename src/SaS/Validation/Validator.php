@@ -33,7 +33,7 @@ class Validator {
             if(!array_key_exists($key, $constraints)) {
                 if($noAdditionals) {
                     $ekey = htmlspecialchars($key); // additional security measure, normally not neccessary
-                    $this->addError([999, "Unknown parameter $ekey"]);
+                    $this->addError([9999, "Unknown parameter $ekey"]);
                 }
                 continue;
             }
@@ -80,7 +80,7 @@ class Validator {
     }
     
     protected function validateSHA1($val, array $error) {
-        if(!is_string($val) || strlen($val) !== 40 || !$this->matches('/^[a-f0-9]$/', $val)) {
+        if(!is_string($val) || strlen($val) !== 40 || !$this->matches('/^[a-f0-9]*$/', $val)) {
             $this->addError($error);
         } 
         
@@ -91,7 +91,7 @@ class Validator {
         if(!is_string($val)) {
             $this->addError($error);
         } else {
-            $pattern = sprintf('/^[%s]$/', preg_quote($this->validChars, '/'));
+            $pattern = sprintf('/^[%s]*$/i', $this->validChars);
             if(!$this->matches($pattern, $val)) {
                 $this->addError($error);
             }
