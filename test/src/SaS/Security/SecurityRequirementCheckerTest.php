@@ -119,6 +119,6 @@ class SecurityRequirementCheckerTest extends \PHPUnit_Framework_TestCase {
                        ->will($this->returnValue(true));
          
         $this->assertTrue($this->checker->isStatisfiedBy($requirements, $token_bar, $user_foo, $pass_foo));
-    } 
+    }
 
 }
