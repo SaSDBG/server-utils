@@ -1,6 +1,7 @@
 <?php
 
 namespace SaS\Security;
+use SaS\Token\TokenRegistryInterface;
 
 /**
  * Description of SecurityRequirements
@@ -13,7 +14,7 @@ class SecurityRequirementChecker {
     
     protected $auth;
     
-    public function __construct( TokenCheckerInterface $tc, AuthenticatorInterface $auth) {
+    public function __construct(TokenRegistryInterface  $tc, AuthenticatorInterface $auth) {
         $this->tc = $tc;
         $this->auth = $auth;
     }

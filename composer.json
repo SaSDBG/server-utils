@@ -8,8 +8,16 @@
             "email": "drak3@live.de"
         }
     ],
+            
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/SaSDBG/token-registry"
+        }
+    ],
+            
     "require": {
-
+        "sasdbg/token-registry": "dev-master"
     },
     "autoload": {
         "psr-0": { "SaS": ["src/", "test/src/"] }

@@ -1,0 +1,64 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "1a469d566e1b7fd5091f306c6f4da115",
+    "packages": [
+        {
+            "name": "sasdbg/token-registry",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SaSDBG/token-registry.git",
+                "reference": "5666068a085038caced5e601fb36975d8f19d3f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SaSDBG/token-registry/zipball/5666068a085038caced5e601fb36975d8f19d3f3",
+                "reference": "5666068a085038caced5e601fb36975d8f19d3f3",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "SaS": [
+                        "src/",
+                        "test/src/"
+                    ]
+                }
+            },
+            "license": [
+                "GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "drak3",
+                    "email": "drak3@live.de"
+                }
+            ],
+            "description": "The central token registry",
+            "support": {
+                "source": "https://github.com/SaSDBG/token-registry/tree/master",
+                "issues": "https://github.com/SaSDBG/token-registry/issues"
+            },
+            "time": "2013-04-29 10:02:47"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "sasdbg/token-registry": 20
+    },
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}

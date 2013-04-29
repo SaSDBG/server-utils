@@ -19,7 +19,7 @@ class SecurityRequirementCheckerTest extends \PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      */
     protected function setUp() {
-        $this->tokenMock = $this->getMock('\SaS\Security\TokenCheckerInterface');
+        $this->tokenMock = $this->getMock('\SaS\Token\TokenRegistryInterface');
         $this->authMock = $this->getMock('\SaS\Security\AuthenticatorInterface');
         $this->checker = new SecurityRequirementChecker($this->tokenMock, $this->authMock);
     }
@@ -94,7 +94,7 @@ class SecurityRequirementCheckerTest extends \PHPUnit_Framework_TestCase {
                        ->will($this->returnValue(true));
         $this->assertTrue($this->checker->isStatisfiedBy($requirements, $token_foo, $user_bar, $pass_bar));
         
-        $this->tokenMock = $this->getMock('\SaS\Security\TokenCheckerInterface');
+        $this->tokenMock = $this->getMock('\SaS\Token\TokenRegistryInterface');
         $this->authMock = $this->getMock('\SaS\Security\AuthenticatorInterface');
         
         $this->checker = new SecurityRequirementChecker($this->tokenMock, $this->authMock);
