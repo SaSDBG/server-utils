@@ -19,6 +19,14 @@
     "require": {
         "sasdbg/token-registry": "dev-master"
     },
+    
+    "require-dev": {
+        "silex/silex": "1.0.*@dev"
+    },
+    "suggests": {
+        "silex/silex": "1.0.*@dev"
+    },
+            
     "autoload": {
         "psr-0": { "SaS": ["src/", "test/src/"] }
     }
