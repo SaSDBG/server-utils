@@ -16,12 +16,10 @@ abstract class AbstractController implements ControllerInterface {
     protected $route;
     protected $method;
     
-    public function getRequestConstraints();
-    public function getSecurityRequirements();
-    public function getSecurityError();
-    
-    protected $action;
-    
+    abstract public function getRequestConstraints();
+    abstract public function getSecurityRequirements();
+    abstract public function getSecurityError();
+    abstract public function action(Application $app, Request $r);
     
     private $data;
     
@@ -38,8 +36,8 @@ abstract class AbstractController implements ControllerInterface {
     }
     
     protected function getData() {
-        if($this->data === NULL) {
-            throw new Exception('Cannot access Request Data before request is validated');
+        if($this->data === null) {
+            throw new \Exception('Cannot access Request Data before request is validated');
         }
         return $this->data;
     }
@@ -47,13 +45,9 @@ abstract class AbstractController implements ControllerInterface {
     protected function security() {
         return new \SaS\Security\SecurityRequirementBuilder();
     }
-    
-    protected function constraintBuilder() {
-        //todo: implement
-    }
-    
+        
     public function getActionCallback() {
-        return $this->action;
+        return [$this, 'action'];
     }
 }
 

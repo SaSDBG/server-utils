@@ -21,7 +21,8 @@
     },
     
     "require-dev": {
-        "silex/silex": "1.0.*@dev"
+        "silex/silex": "1.0.*@dev",
+        "symfony/browser-kit": "2.2.*"
     },
     "suggests": {
         "silex/silex": "1.0.*@dev"

@@ -43,7 +43,7 @@ class ControllerManager {
         $this->controllers = $controllers;
     }
 
-    public function addControler(ControllerInterface $c) {
+    public function addController(ControllerInterface $c) {
         $this->controllers[] = $c;
     }
     
@@ -56,13 +56,13 @@ class ControllerManager {
     protected function registerController(ControllerInterface $c, Application $app) {
         $app->match($c->getRoute(), $c->getActionCallback())
             ->method($c->getMethod())
-            ->before(function(Request $r) {
+            ->before(function(Request $r) use ($c, $app) {
                 return $this->handleRequest($r, $c, $app);
             });
     }
     
     public function handleRequest(Request $r, ControllerInterface $c, Application $app) {
-        $data = array_merge($r->query->all(), $r->request->all());
+        $data = array_merge($r->query->all(), $r->request->all(), $r->attributes->get('_route_params', []));
         
         $validated = $this->validator->validate($data, $c->getRequestConstraints());
         

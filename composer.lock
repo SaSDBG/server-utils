@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "a6ce8d0c9e9b852f304e6649640c5939",
+    "hash": "a5f01ce72e9b5689278aab472cbee1ed",
     "packages": [
         {
             "name": "sasdbg/token-registry",
@@ -136,12 +136,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Silex.git",
-                "reference": "7244eb8e5c3bff655291f6e3addc942b27c369ff"
+                "reference": "e7f608be0efd8b0e67abdd71d10736b43eb7f1f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Silex/zipball/7244eb8e5c3bff655291f6e3addc942b27c369ff",
-                "reference": "7244eb8e5c3bff655291f6e3addc942b27c369ff",
+                "url": "https://api.github.com/repos/fabpot/Silex/zipball/e7f608be0efd8b0e67abdd71d10736b43eb7f1f9",
+                "reference": "e7f608be0efd8b0e67abdd71d10736b43eb7f1f9",
                 "shasum": ""
             },
             "require": {
@@ -210,7 +210,115 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2013-04-27 07:31:15"
+            "time": "2013-05-01 14:58:06"
+        },
+        {
+            "name": "symfony/browser-kit",
+            "version": "v2.2.1",
+            "target-dir": "Symfony/Component/BrowserKit",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/BrowserKit.git",
+                "reference": "v2.2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/BrowserKit/zipball/v2.2.1",
+                "reference": "v2.2.1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/dom-crawler": ">=2.0,<3.0"
+            },
+            "require-dev": {
+                "symfony/css-selector": ">=2.0,<3.0",
+                "symfony/process": ">=2.0,<3.0"
+            },
+            "suggest": {
+                "symfony/process": "2.2.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\BrowserKit\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony BrowserKit Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-03-15 10:14:31"
+        },
+        {
+            "name": "symfony/dom-crawler",
+            "version": "v2.2.1",
+            "target-dir": "Symfony/Component/DomCrawler",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/DomCrawler.git",
+                "reference": "v2.2.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/DomCrawler/zipball/v2.2.1",
+                "reference": "v2.2.1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "symfony/css-selector": ">=2.0,<3.0"
+            },
+            "suggest": {
+                "symfony/css-selector": "2.2.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\DomCrawler\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony DomCrawler Component",
+            "homepage": "http://symfony.com",
+            "time": "2013-04-01 08:05:23"
         },
         {
             "name": "symfony/event-dispatcher",
