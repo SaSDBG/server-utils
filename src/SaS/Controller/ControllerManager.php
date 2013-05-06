@@ -6,14 +6,16 @@ use SaS\Validation\Validator;
 use SaS\Security\SecurityRequirementChecker;
 
 use Silex\Application;
+use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
+
 
 /**
  * Description of ControlerManager
  *
  * @author drak3
  */
-class ControllerManager {
+class ControllerManager implements ControllerProviderInterface {
     
     protected $controllers = [];
     
@@ -47,14 +49,16 @@ class ControllerManager {
         $this->controllers[] = $c;
     }
     
-    public function registerControllers(Application $app) {
+    public function connect(Application $app) {
+        $controllers = $app['controllers_factory'];
         foreach($this->controllers as $c) {
-            $this->registerController($c, $app);
+            $this->registerController($c, $app, $controllers);
         }
+        return $controllers;
     }
     
-    protected function registerController(ControllerInterface $c, Application $app) {
-        $app->match($c->getRoute(), $c->getActionCallback())
+    protected function registerController(ControllerInterface $c, Application $app, \Silex\ControllerCollection $collection) {
+        $collection->match($c->getRoute(), $c->getActionCallback())
             ->method($c->getMethod())
             ->before(function(Request $r) use ($c, $app) {
                 return $this->handleRequest($r, $c, $app);

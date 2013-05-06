@@ -70,7 +70,7 @@ class ControllerManagerTest extends \PHPUnit_Framework_TestCase {
         $this->controller = new TestController($this);
         
         $this->manager->addController($this->controller);
-        $this->manager->registerControllers($this->app);
+        $this->app->mount('', $this->manager);
     }
     
     protected function doRequest(array $params, $account) {
