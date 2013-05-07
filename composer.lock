@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/SaSDBG/token-registry.git",
-                "reference": "5666068a085038caced5e601fb36975d8f19d3f3"
+                "reference": "fcf0ae013a3854adb56c798a6d34d0fc9d5603e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/SaSDBG/token-registry/zipball/5666068a085038caced5e601fb36975d8f19d3f3",
-                "reference": "5666068a085038caced5e601fb36975d8f19d3f3",
+                "url": "https://api.github.com/repos/SaSDBG/token-registry/zipball/fcf0ae013a3854adb56c798a6d34d0fc9d5603e5",
+                "reference": "fcf0ae013a3854adb56c798a6d34d0fc9d5603e5",
                 "shasum": ""
             },
             "type": "library",
@@ -42,7 +42,7 @@
                 "source": "https://github.com/SaSDBG/token-registry/tree/master",
                 "issues": "https://github.com/SaSDBG/token-registry/issues"
             },
-            "time": "2013-04-29 10:02:47"
+            "time": "2013-05-06 17:15:09"
         }
     ],
     "packages-dev": [
@@ -132,16 +132,16 @@
         },
         {
             "name": "silex/silex",
-            "version": "dev-master",
+            "version": "1.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Silex.git",
-                "reference": "e7f608be0efd8b0e67abdd71d10736b43eb7f1f9"
+                "reference": "b5d9bad2adf42f82f58e3eda3908aabada67a77e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Silex/zipball/e7f608be0efd8b0e67abdd71d10736b43eb7f1f9",
-                "reference": "e7f608be0efd8b0e67abdd71d10736b43eb7f1f9",
+                "url": "https://api.github.com/repos/fabpot/Silex/zipball/b5d9bad2adf42f82f58e3eda3908aabada67a77e",
+                "reference": "b5d9bad2adf42f82f58e3eda3908aabada67a77e",
                 "shasum": ""
             },
             "require": {
@@ -155,7 +155,7 @@
             "require-dev": {
                 "doctrine/dbal": ">=2.2.0,<2.4.0-dev",
                 "monolog/monolog": ">=1.4,<2.0,>=1.4.1",
-                "swiftmailer/swiftmailer": "4.2.*",
+                "swiftmailer/swiftmailer": "5.*",
                 "symfony/browser-kit": ">=2.1,<2.4-dev",
                 "symfony/config": ">=2.1,<2.4-dev",
                 "symfony/css-selector": ">=2.1,<2.4-dev",
@@ -210,7 +210,7 @@
             "keywords": [
                 "microframework"
             ],
-            "time": "2013-05-01 14:58:06"
+            "time": "2013-05-04 16:24:16"
         },
         {
             "name": "symfony/browser-kit",
