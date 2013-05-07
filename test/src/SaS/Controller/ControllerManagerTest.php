@@ -54,7 +54,7 @@ class ControllerManagerTest extends \PHPUnit_Framework_TestCase {
      * This method is called before a test is executed.
      */
     protected function setUp() {
-        $this->validator = new \SaS\Validation\Validator('a-zA-Z0-9');
+        $this->validator = new \SaS\Validation\Validator('a-zA-Z0-9&\/\"\'<>()');
         $this->secChecker = $this->getMockBuilder('SaS\Security\SecurityRequirementChecker')
                                  ->disableOriginalConstructor()
                                  ->getMock();
