@@ -57,7 +57,9 @@ class ControllerManagerTest extends \PHPUnit_Framework_TestCase {
                                  ->disableOriginalConstructor()
                                  ->getMock();
         
-        $this->manager = new ControllerManager($this->validator, $this->secChecker);
+        $this->logger = $this->getMockForAbstractClass('\Psr\Log\LoggerInterface');
+        
+        $this->manager = new ControllerManager($this->validator, $this->secChecker, $this->logger);
         
         $this->app = new Application;
         $this->app['debug'] = true;
@@ -92,8 +94,18 @@ class ControllerManagerTest extends \PHPUnit_Framework_TestCase {
             'user' => '123',
             'pass' => sha1('bar'),
         ];
-        
+              
         $this->setIsStatisfied(true, $params);
+        
+        $this->logger->expects($this->exactly(2))
+                     ->method('debug')
+                     ->with($this->logicalOr(
+                                $this->equalTo('[ControllerManager] Handling Request'),
+                                $this->equalTo('[ControllerManager] Forwarded Request to Controller')
+                             ),
+                             $this->equalTo(['clientIP' => '127.0.0.1'])
+                       );
+        
         $this->doRequest($params, '123');    
         
         
@@ -102,8 +114,12 @@ class ControllerManagerTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf('\Symfony\Component\HttpFoundation\JsonResponse', $response);
         
         $responseData = json_decode($response->getContent(), JSON_OBJECT_AS_ARRAY);
-        $expectedResponseData = $params;
-        $expectedResponseData['accountID'] = 123;
+        $expectedResponseData = [
+            'accountID' => 123,
+            'token' => sha1('foo'),
+            'user' => '123',
+            'pass' => sha1('bar'),
+        ];
         $this->assertSame($expectedResponseData, $responseData);
     }
     
@@ -113,6 +129,20 @@ class ControllerManagerTest extends \PHPUnit_Framework_TestCase {
             'user' => '123',
             'pass' => sha1('bar'),
         ];
+        
+        $this->logger->expects($this->once())
+                     ->method('debug')
+                     ->with($this->equalTo('[ControllerManager] Handling Request'),
+                            $this->equalTo(['clientIP' => '127.0.0.1']));
+        
+        $this->logger->expects($this->once())
+                     ->method('error')
+                     ->with($this->equalTo('[ControllerManager] Request does not statisfy security Requirements'),
+                            $this->equalTo([
+                                'clientIP' => '127.0.0.1',
+                                'token' => sha1('foo'),
+                                'user' => '123'
+                            ]));
         
         $this->setIsStatisfied(false, $params);
         $this->doRequest($params, '123');
@@ -133,6 +163,16 @@ class ControllerManagerTest extends \PHPUnit_Framework_TestCase {
             'token' => 'asdf',
             'user' => '&%',
         ];
+        
+        $this->logger->expects($this->once())
+                     ->method('debug')
+                     ->with($this->equalTo('[ControllerManager] Handling Request'),
+                            $this->equalTo(['clientIP' => '127.0.0.1'])
+                       );
+        $this->logger->expects($this->once())
+                     ->method('error')
+                     ->with($this->equalTo('[ControllerManager] Received Invalid Request'),
+                            $this->equalTo(['clientIP' => '127.0.0.1']));
         
         $this->doRequest($params, 'asdf');
         
