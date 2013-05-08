@@ -33,6 +33,10 @@ class APIServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->provider = new APIServiceProvider;
         $this->app = new \Silex\Application;
+        $this->app['logger'] = $this->app->share(function() {
+            return new \Psr\Log\NullLogger;
+        });
+        
         $this->app->register($this->provider);
         
         $this->tokenFile = tempnam(sys_get_temp_dir(), 'tokens');

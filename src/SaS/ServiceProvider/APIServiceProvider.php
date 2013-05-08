@@ -67,8 +67,7 @@ class APIServiceProvider implements ServiceProviderInterface {
         });
         
         $app['api.controller_manager'] = $app->share(function() use ($app) {
-            //todo integrate with logger
-            return new ControllerManager($app['validator'], $app['security.checker']);
+            return new ControllerManager($app['validator'], $app['security.checker'], $app['logger']);
         });
     }
 
