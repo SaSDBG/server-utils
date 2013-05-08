@@ -17,11 +17,12 @@
     ],
             
     "require": {
-        "sasdbg/token-registry": "dev-master"
+        "sasdbg/token-registry": "dev-master",
+        "silex/silex": "1.0.*",
+        "monolog/monolog": "1.5.*"
     },
     
     "require-dev": {
-        "silex/silex": "1.0.*",
         "symfony/browser-kit": "2.2.*"
     },
     "suggests": {
