@@ -8,6 +8,7 @@ use SaS\Security\SecurityRequirementChecker;
 use Silex\Application;
 use Silex\ControllerProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
 
 
 /**
@@ -26,13 +27,19 @@ class ControllerManager implements ControllerProviderInterface {
     protected $validator;
     
     /**
-     * SaS\Security\SecurityRequirementChecker
+     * @var SaS\Security\SecurityRequirementChecker
      */
     protected $securityChecker;
     
-    public function __construct(Validator $v, SecurityRequirementChecker $s) {
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+    
+    public function __construct(Validator $v, SecurityRequirementChecker $s, LoggerInterface $logger) {
         $this->validator = $v;
         $this->securityChecker = $s;
+        $this->logger = $logger;
     }
     
     
@@ -66,11 +73,18 @@ class ControllerManager implements ControllerProviderInterface {
     }
     
     public function handleRequest(Request $r, ControllerInterface $c, Application $app) {
+        $context = [
+            'clientIP' => $r->getClientIp(),
+        ];
+        
+        $this->logger->debug('[ControllerManager] Handling Request', $context);
+        
         $data = array_merge($r->query->all(), $r->request->all(), $r->attributes->get('_route_params', []));
         
         $validated = $this->validator->validate($data, $c->getRequestConstraints());
         
         if($validated instanceof \SaS\Validation\ValidationFailure) {
+            $this->logger->error('[ControllerManager] Received Invalid Request', $context);
             return $this->buildRequestErrorResponse($validated->getErrors());
         } else {
             $data = $validated->get();
@@ -83,8 +97,13 @@ class ControllerManager implements ControllerProviderInterface {
         $pass = $r->get('pass', '');
         
         if(!$this->securityChecker->isStatisfiedBy($c->getSecurityRequirements(), $token, $username, $pass)) {
+            $context['token'] = $token;
+            $context['user'] = $username;
+            $this->logger->error('[ControllerManager] Request does not statisfy security Requirements', $context);
             return $this->buildSecurityErrorResponse($c->getSecurityError());
         }
+        
+        $this->logger->debug('[ControllerManager] Forwareded request to controller', $context);
         
         return null; //null means success
     }
