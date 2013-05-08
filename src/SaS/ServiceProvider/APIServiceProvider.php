@@ -32,15 +32,15 @@ class APIServiceProvider implements ServiceProviderInterface {
     public function register(Application $app)
     {
         $app['token.loader'] = $app->protect(function($fileName) use ($app) {
-            if(file_exists($fileName) && is_readable($fileName)) {
+            if(is_string($fileName) && file_exists($fileName) && is_readable($fileName)) {
                 return require($fileName);
             }
             throw new \RuntimeException("Could not load tokenfile");
         });
         
-        $app['token.registry'] = $app->protect(function() use ($app) {
+        $app['token.registry'] = $app->share(function() use ($app) {
             $reg = new TokenRegistry;
-            $givenTokens = $app['token.loader']($app);
+            $givenTokens = $app['token.loader']($app['token.token_file']);
             $reg->setGivenTokens($givenTokens);
             return $reg;
         });
@@ -62,13 +62,13 @@ class APIServiceProvider implements ServiceProviderInterface {
             //todo: implement this service
         });
         
-        $app['security_checker'] = $app->share(function() use ($app) {
+        $app['security.checker'] = $app->share(function() use ($app) {
             return new SecurityRequirementChecker($app['token.registry'], $app['security.authenticator']);
         });
         
         $app['api.controller_manager'] = $app->share(function() use ($app) {
             //todo integrate with logger
-            return new ControllerManager($app['validator'], $app['security.authenticator']);
+            return new ControllerManager($app['validator'], $app['security.checker']);
         });
     }
 
@@ -79,6 +79,7 @@ class APIServiceProvider implements ServiceProviderInterface {
      */
     public function boot(Application $app)
     {
+        $app['api.controller_manager']->setControllers($app['api.controllers']);
         $app->mount('/', $app['api.controller_manager']);
     }
 }
