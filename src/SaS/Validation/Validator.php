@@ -20,6 +20,15 @@ class Validator {
      */
     private $currentErrors;
     
+    public function getValidChars() {
+        return $this->validChars;
+    }
+
+    public function setValidChars($validChars) {
+        $this->validChars = $validChars;
+    }
+
+        
     /**
      * 
      * @param array $data
