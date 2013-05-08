@@ -13,7 +13,6 @@ use Psr\Log\LoggerInterface;
 
 /**
  * Description of ControlerManager
- *
  * @author drak3
  */
 class ControllerManager implements ControllerProviderInterface {
@@ -73,13 +72,11 @@ class ControllerManager implements ControllerProviderInterface {
     }
     
     public function handleRequest(Request $r, ControllerInterface $c, Application $app) {
-        $context = [
-            'clientIP' => $r->getClientIp(),
-        ];
-        
+        $context = ['clientIP' => '127.0.0.1'];
+                
         $this->logger->debug('[ControllerManager] Handling Request', $context);
         
-        $data = array_merge($r->query->all(), $r->request->all(), $r->attributes->get('_route_params', []));
+        $data = array_merge($r->attributes->get('_route_params', []), $r->query->all(), $r->request->all());
         
         $validated = $this->validator->validate($data, $c->getRequestConstraints());
         
@@ -100,10 +97,11 @@ class ControllerManager implements ControllerProviderInterface {
             $context['token'] = $token;
             $context['user'] = $username;
             $this->logger->error('[ControllerManager] Request does not statisfy security Requirements', $context);
+            
             return $this->buildSecurityErrorResponse($c->getSecurityError());
         }
         
-        $this->logger->debug('[ControllerManager] Forwareded request to controller', $context);
+        $this->logger->debug('[ControllerManager] Forwarded Request to Controller', $context);
         
         return null; //null means success
     }
