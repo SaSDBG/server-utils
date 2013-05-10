@@ -114,6 +114,11 @@ class APIServiceProviderTest extends \PHPUnit_Framework_TestCase
         
         $this->assertInstanceOf('\SaS\Controller\ControllerManager', $this->app['api.controller_manager']);
     }
+    
+    public function testSignerService() {
+        $this->app['security.secret'] = sha1('asdf');
+        $this->assertInstanceOf('SaS\Util\Signer', $this->app['security.signer']);
+    }
 
     /**
      * @covers SaS\ServiceProvider\APIServiceProvider::boot

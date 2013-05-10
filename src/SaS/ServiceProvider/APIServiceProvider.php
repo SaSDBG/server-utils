@@ -6,6 +6,7 @@ use SaS\Validation\Validator;
 use SaS\Security\SecurityRequirementChecker;
 use SaS\Security\NullAuthenticator;
 use SaS\Controller\ControllerManager;
+use SaS\Util\Signer;
 
 use Silex\ServiceProviderInterface;
 use Silex\Application;
@@ -24,7 +25,8 @@ class APIServiceProvider implements ServiceProviderInterface {
      *  security.authenticator  Instance of AuthenticatorInterface, 
      *                          preconfigured are security.authenticator.null (throws when invoked)
      *                                        and security.authenticator.auth_server (speaks to an auth-server, requires sasdbg/auth-client)
-     *  security.authenticator.auth_server.url     The Adress of the auth-server, only needed when using security.authenticator.auth_server                                                               
+     *  security.authenticator.auth_server.url     The Adress of the auth-server, only needed when using security.authenticator.auth_server
+     *  security.secret                            A secret, normally used for the signer                                                               
      * @param \Silex\Application $app
      * @return void
      * @throws \RuntimeException
@@ -64,6 +66,14 @@ class APIServiceProvider implements ServiceProviderInterface {
         
         $app['security.checker'] = $app->share(function() use ($app) {
             return new SecurityRequirementChecker($app['token.registry'], $app['security.authenticator']);
+        });
+        
+        $app['security.signer.secret'] = function() use ($app) {
+            return $app['security.secret'];
+        };
+        
+        $app['security.signer'] = $app->share(function() use ($app) {
+            return new Signer($app['security.signer.secret']);
         });
         
         $app['api.controller_manager'] = $app->share(function() use ($app) {
