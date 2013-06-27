@@ -8,7 +8,7 @@ use Silex\Provider\MonologServiceProvider;
  *
  * @author drak3
  */
-class LoggerServiceProvider extends MonologServiceProvider {
+class LoggerProvider extends MonologServiceProvider {
     
 }
 
