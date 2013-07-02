@@ -19,7 +19,8 @@
     "require": {
         "sasdbg/token-registry": "dev-master",
         "silex/silex": "1.0.*",
-        "monolog/monolog": "1.5.*"
+        "monolog/monolog": "1.5.*",
+        "symfony/monolog-bridge": "2.2.*"
     },
     
     "require-dev": {
