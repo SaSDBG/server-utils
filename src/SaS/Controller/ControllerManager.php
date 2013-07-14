@@ -81,8 +81,9 @@ class ControllerManager implements ControllerProviderInterface {
         $validated = $this->validator->validate($data, $c->getRequestConstraints());
         
         if($validated instanceof \SaS\Validation\ValidationFailure) {
-            $this->logger->error('[ControllerManager] Received Invalid Request', $context);
-            return $this->buildRequestErrorResponse($validated->getErrors());
+            //$this->logger->error('[ControllerManager] Received Invalid Request', $context);
+            //return $this->buildRequestErrorResponse($validated->getErrors());
+            return $c->failureResponse($validated->getErrors()[0]['message']);
         } else {
             $data = $validated->get();
         }
